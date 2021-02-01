@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="index.css">
+    </link>
+</head>
+
+<body>
+    <div class="container-carousel">
+        <!-- Wrapper for slides -->
+        <div class="carousels">
+            <div id="introductionDiv">
+                <img id="introductionImage" src="assets/images/monk.png"/>
+                <div class="introMessageSection">
+                    <span id="introMessage1">Patience!</span>
+                    <span id="introMessage2">young padawan...</span>
+                </div>
+            </div>
+            <div id="nextDiv">
+                <div id="divSlide">
+                    <p id="slideMessage">WE ARE BREAKING OUR VOW OF SILENCE</p>
+                </div>
+                <a class="prev" onclick="minusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+                <img src="assets/images/logo.svg" class="logo-image">
+
+                <div class="btn-group">
+                    <button class="slide-button active" onclick="currentSlide(0)">0</button>
+                    <button class="slide-button" onclick="currentSlide(1)">1</button>
+                    <button class="slide-button" onclick="currentSlide(2)">2</button>
+                    <button class="slide-button" onclick="currentSlide(3)">3</button>
+                    <button class="slide-button" onclick="currentSlide(4)">4</button>
+                    <button class="slide-button" onclick="currentSlide(5)">5</button>
+                    <button class="slide-button" onclick="currentSlide(6)">6</button>
+                    <button class="slide-button" onclick="currentSlide(7)">7</button>
+                    <button class="slide-button" onclick="currentSlide(8)">8</button>
+                    <button class="slide-button" onclick="currentSlide(9)">9</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="index.js"></script>
+
+</html>
