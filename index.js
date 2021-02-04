@@ -10,6 +10,17 @@ const monkMessages = [
   "TEMPORARY SACRIFICE BRINGS LASTING RESULTS",
   "BECOME A MONK",
 ];
+
+const disclaimerMessages = [
+  "In Januray 2011, after a decade of digital, we opened the doors to our temple.",
+  "Follow our noble eightfold path to digital enlightenment here.",
+  "Interested in joining our monastery?",
+  "Check out our openings on ",
+  "Mail ons",
+  "Facebook",
+  "Twiiter",
+];
+
 let newPositionX = 0;
 let slideIndex = 0;
 var windowHeight = 0;
@@ -18,11 +29,17 @@ const containerCarousel = document.getElementsByClassName("container-carousel");
 const carousel = document.getElementsByClassName("carousels");
 let nextDiv = document.getElementById("nextDiv");
 let slide = document.getElementById("divSlide");
+let introductionDiv = document.getElementById("introductionDiv");
+let introductionImage = document.getElementById("introductionImage");
 let introMessage2 = document.getElementById("introMessage2");
+const slideMessages = document.getElementById("slideMessage");
+const slideParagraph = document.getElementsByTagName("p");
 let previousArrow = document.getElementsByClassName("prev");
 let nextArrow = document.getElementsByClassName("next");
+const buttons = document.getElementsByClassName("slide-button");
 init();
 messageOnSlide(slideIndex);
+setDisclaimerMessages(slideIndex);
 
 /* Calculate window dimensions */
 function setWindowDimensions() {
@@ -41,7 +58,7 @@ function init() {
   nextDiv.style.height = containerCarousel[0].style.height =
     windowHeight + "px";
   nextDiv.style.backgroundSize = "8190px " + windowHeight + "px";
-  document.getElementById("introductionImage").style.transform = "scale(1.5)";
+  introductionImage.style.transform = "scale(1.5)";
   introMessage2.style.display = "none";
   previousArrow[0].hidden = true;
 
@@ -54,32 +71,36 @@ function init() {
 
   /* time delay after which to show the first slide at index 0 */
   setTimeout(function () {
-    document.getElementById("introductionDiv").style.display = "none";
-    document.getElementById("nextDiv").style.display = "block";
+    introductionDiv.style.display = "none";
+    nextDiv.style.display = "block";
   }, 5000);
 }
 
 /* Function to set the current slide when going through them in random order */
-function currentSlide(n) {
-  let mapImageWithButtonPosition = n * -800;
+function currentSlide(slideNumber) {
+  let mapImageWithButtonPosition = slideNumber * -800;
+  nextArrow[0].hidden = slideNumber === 9 ? true : false;
+  previousArrow[0].hidden = slideNumber >= 1 && slideNumber < 10 ? false : true;
   calculateNewPosition(mapImageWithButtonPosition);
-  styleMessagesOnSlide(n);
-  messageOnSlide(n);
-  buttonEventListener(n);
+  styleMessagesOnSlide(slideNumber);
+  messageOnSlide(slideNumber);
+  setDisclaimerMessages(slideNumber);
+  buttonEventListener(slideNumber);
 }
 
 /* Click on next arrow to go through the slides */
-function plusSlides() {
-  if (slideIndex > 10) {
-    let slideIndex = 0;
-    nextSlide((slideIndex += 1));
+function plusSlides(n) {
+  if (slideIndex === 9) {
+    slideIndex = 0;
+    nextSlide((slideIndex += n));
+  } else {
+    nextSlide((slideIndex += n));
   }
-  nextSlide((slideIndex += 1));
 }
 
 /* Click on previous arrow to go through the slides */
-function minusSlides() {
-  prevSlide((slideIndex += -1));
+function minusSlides(n) {
+  prevSlide((slideIndex += n));
 }
 
 /* Assign the background position for the bacground image on each slide */
@@ -97,6 +118,7 @@ function prevSlide(slideNumber) {
     calculateNewPosition(newPositionX);
     styleMessagesOnSlide(slideNumber);
     messageOnSlide(slideNumber);
+    setDisclaimerMessages(slideNumber);
     buttonEventListener(slideNumber);
   }
 }
@@ -106,10 +128,15 @@ function nextSlide(slideNumber) {
   if (slideNumber >= 1 && slideNumber < 10) {
     nextArrow[0].hidden = slideNumber === 9 ? true : false;
     previousArrow[0].hidden = false;
-    newPositionX = newPositionX - 800;
-    calculateNewPosition(newPositionX);
+    if (newPositionX === -7200) {
+      newPositionX = 0;
+      calculateNewPosition((newPositionX = newPositionX - 800));
+    } else {
+      calculateNewPosition((newPositionX = newPositionX - 800));
+    }
     styleMessagesOnSlide(slideNumber);
     messageOnSlide(slideNumber);
+    setDisclaimerMessages(slideNumber);
   } else {
     previousArrow[0].hidden = true;
   }
@@ -118,7 +145,6 @@ function nextSlide(slideNumber) {
 
 /* Style the messages shown on each slide */
 function styleMessagesOnSlide(slideNumber) {
-  const slideMessages = document.getElementById("slideMessage");
   slideMessages.className = "";
   slideMessages.className = "class" + slideNumber;
   switch (slideNumber) {
@@ -179,45 +205,48 @@ function styleMessagesOnSlide(slideNumber) {
 
 /* Show message on each slide */
 function messageOnSlide(slideMessageNumber) {
-  const slideParagraph = document.getElementsByTagName("p");
   /* go through the length of monkMessages array */
   for (i = 0; i < monkMessages.length; i++) {
     if (slideMessageNumber === i) {
       slideParagraph[0].innerText = monkMessages[i];
     }
+  }
+}
 
-    /* Check for messages in small fonts on the first and last slide*/
-    if (slideMessageNumber === 0) {
-      document.getElementsByClassName("disclaimer1")[0].hidden = false;
-      document.getElementsByClassName("disclaimer2")[0].hidden = false;
-      document.getElementsByClassName("disclaimer3")[0].hidden = true;
-      document.getElementsByClassName("disclaimer4")[0].hidden = true;
-      document.getElementsByClassName("disclaimer5")[0].hidden = true;
-      document.getElementsByClassName("disclaimer6")[0].hidden = true;
-      document.getElementsByClassName("disclaimer7")[0].hidden = true;
-    } else if (slideMessageNumber !== 9) {
-      document.getElementsByClassName("disclaimer1")[0].hidden = true;
-      document.getElementsByClassName("disclaimer2")[0].hidden = true;
-      document.getElementsByClassName("disclaimer3")[0].hidden = true;
-      document.getElementsByClassName("disclaimer4")[0].hidden = true;
-      document.getElementsByClassName("disclaimer5")[0].hidden = true;
-      document.getElementsByClassName("disclaimer6")[0].hidden = true;
-      document.getElementsByClassName("disclaimer7")[0].hidden = true;
+/* Function to set disclaimer messages(in small fonts) on first and last slides */
+function setDisclaimerMessages(slideNumber) {
+  let mediaMonkLink = document.getElementById("siteUrl");
+  for (let i = 0; i < disclaimerMessages.length; i++) {
+    let disclaimers = document.getElementsByClassName("disclaimer" + i);
+    let disclaimerClassNumber = disclaimers[0].className.substr(-1);
+
+    if (slideNumber === 0) {
+      if ((i === 0 || i === 1) && i == disclaimerClassNumber) {
+        disclaimers[0].innerText = disclaimerMessages[i];
+        disclaimers[0].hidden = false;
+      } else {
+        disclaimers[0].innerText = "";
+        disclaimers[0].hidden = true;
+      }
+      mediaMonkLink.style.display = "none";
+    } else if (slideNumber === 9) {
+      if (i !== 0 && i !== 1 && i == disclaimerClassNumber) {
+        disclaimers[0].innerText = disclaimerMessages[i];
+        disclaimers[0].hidden = false;
+      } else {
+        disclaimers[0].innerText = "";
+        disclaimers[0].hidden = true;
+      }
+      mediaMonkLink.style.display = "block";
     } else {
-      document.getElementsByClassName("disclaimer1")[0].hidden = true;
-      document.getElementsByClassName("disclaimer2")[0].hidden = true;
-      document.getElementsByClassName("disclaimer3")[0].hidden = false;
-      document.getElementsByClassName("disclaimer4")[0].hidden = false;
-      document.getElementsByClassName("disclaimer5")[0].hidden = false;
-      document.getElementsByClassName("disclaimer6")[0].hidden = false;
-      document.getElementsByClassName("disclaimer7")[0].hidden = false;
+      disclaimers[0].innerText = "";
+      disclaimers[0].hidden = true;
     }
   }
 }
 
 /* Button group to go through slides with a click */
 function buttonEventListener(slideNumber) {
-  const buttons = document.getElementsByClassName("slide-button");
   if (slideNumber >= 0 && slideNumber < 10) {
     for (i = 0; i < buttons.length; i++) {
       if (slideNumber === i) {
