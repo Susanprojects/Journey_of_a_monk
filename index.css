@@ -68,16 +68,22 @@
   height: 100%;
 }
 
-img#introductionImage {
-  position: absolute;
+.img-container{
+	position: absolute;
+	box-shadow: 3px 14px 39px #ccc;
+	width: 1%;
+	top: 30%;
+	left: 47%;
   margin: auto;
-  width: 3%;
-  box-shadow: 10px 10px 50px #ccc;
-  top: 30%;
-  left: 47%;
   animation: floatBubble 2s;
   animation-iteration-count: 1;
   transition: transform 0.2s;
+  background: rgb(45 45 45);
+}
+
+img#introductionImage {
+  width: 50px;
+  background-color: transparent;
 }
 
 .introMessageSection {

@@ -73,7 +73,7 @@ function init() {
   setTimeout(function () {
     introductionDiv.style.display = "none";
     nextDiv.style.display = "block";
-  }, 5000);
+  }, 3500);
 }
 
 /* Function to set the current slide when going through them in random order */
@@ -241,6 +241,7 @@ function setDisclaimerMessages(slideNumber) {
     } else {
       disclaimers[0].innerText = "";
       disclaimers[0].hidden = true;
+      mediaMonkLink.style.display = "none";
     }
   }
 }
